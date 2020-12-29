@@ -1,0 +1,23 @@
+.containerEntrance {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.containerEntrance strong {
+  line-height: 26px;
+  font-size: 2vh;
+}
+
+.containerEntrance h1 {
+  line-height: 26px;
+  font-size: 2.5vh;
+  font-weight: bold;
+}
+
+.containerEntrance p {
+  font-size: 2vh;
+  line-height: 22px;
+  color: #fff;
+  margin: 0;
+  text-align: justify;
+}
