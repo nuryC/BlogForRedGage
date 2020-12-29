@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonCard, IonCardContent, IonRow, IonCol } from '@ionic/react';
-import './BlogEntrance.css';
+import './ListEntrance.css';
 
 interface ContainerProps {
   userName: string;
@@ -10,7 +10,7 @@ interface ContainerProps {
   coments: number;
 }
 
-const BlogEntrance: React.FC<ContainerProps> = ({ 
+const ListEntrance: React.FC<ContainerProps> = ({ 
   title, 
   userName, 
   timestamp, 
@@ -19,17 +19,17 @@ const BlogEntrance: React.FC<ContainerProps> = ({
 }) => {
   return (
     <>
-      <IonCard color="medium">
+      <IonCard href="/Detail" color="medium">
         <IonCardContent>
           <div className="containerEntrance">
             <h1>{title}</h1>
-            <strong>@{userName}</strong>
+            <strong>{userName}</strong>
             <p> {timestamp} </p> <br/>
             <p> {content} </p>
           </div>
           <IonRow class="cardfooter">
             <IonCol>
-              <p>{coments} coments </p>
+              <p>{coments} comments </p>
             </IonCol>
           </IonRow>
         </IonCardContent>
@@ -38,4 +38,4 @@ const BlogEntrance: React.FC<ContainerProps> = ({
   );
 };
 
-export default BlogEntrance;
+export default ListEntrance;

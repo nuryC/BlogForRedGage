@@ -1,0 +1,16 @@
+.contendComment {
+    margin:0;
+    color: #000;
+}
+
+.contendComment strong {
+    line-height: 26px;
+    font-size: 2vh;
+}
+
+.contendComment p {
+    font-size: 2vh;
+    line-height: 22px;
+    margin: 0;
+    text-align: justify;
+}
