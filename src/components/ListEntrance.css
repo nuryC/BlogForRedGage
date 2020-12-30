@@ -21,3 +21,7 @@
   margin: 0;
   text-align: justify;
 }
+
+.containerEntrance span{
+  font-size: 1.8vh;
+}

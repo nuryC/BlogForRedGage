@@ -3,6 +3,7 @@ import { IonCard, IonCardContent } from '@ionic/react';
 import './Post.css';
 
 interface ContainerProps {
+  id: string;
   userName: string;
   timestamp: string;
   content: string;
@@ -11,6 +12,7 @@ interface ContainerProps {
 
 const Post: React.FC<ContainerProps> = ({ 
   title, 
+  id,
   userName, 
   timestamp, 
   content

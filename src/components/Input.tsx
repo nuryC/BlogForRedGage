@@ -26,7 +26,7 @@ const Input: FC<InputProps> = ({
         )}
         <Controller
           render={({onChange}) => (
-            (component ? <IonTextarea clearOnEdit={false} onIonChange={onChange} /> : <IonInput onIonChange={onChange} />)  ?? <IonInput onIonChange={onChange} />
+            (component ? <IonTextarea clearOnEdit={true} onIonChange={onChange} /> : <IonInput clearOnEdit={true} onIonChange={onChange} />)  ?? <IonInput onIonChange={onChange} />
           )}
           control={control}
           name={name}

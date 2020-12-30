@@ -1,0 +1,33 @@
+{
+  "posts": [
+    {
+      "username": "Nury",
+      "title": "Json Server",
+      "body": "Get a full fake REST API with zero coding in less than 30 seconds (seriously)\n\nCreated with <3 for front-end developers who need a quick back-end for prototyping and mocking.",
+      "createdAt": "2020-12-30T00:36:39.301Z",
+      "comments": [
+        {
+          "commentsId": 1
+        },
+        {
+          "commentsId": 2
+        }
+      ],
+      "id": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "username": "typicode",
+      "postId": 1
+    },
+    {
+      "username": "user",
+      "body": "some ramdon comment",
+      "postId": 1,
+      "id": 2
+    }
+  ]
+}
