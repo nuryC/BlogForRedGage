@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, 
   IonCardHeader, IonCardContent, IonTextarea, IonButton, IonItemDivider, 
   IonLabel, IonButtons, IonBackButton, IonSpinner, IonToast } from '@ionic/react';
-import Post from '../components/Post';
+import PostDetail from '../components/PostDetail';
 import Comments from '../components/Comments';
+import {commentsPost} from '../staticData/comments';
+import {Posts} from '../staticData/posts';
 import { useForm } from "react-hook-form";
 import Input, { InputProps } from "../components/Input";
 import {getDetailPost, getComments, getPosts, createComment, editPost} from '../services/api';
@@ -14,64 +16,11 @@ interface UserDetailPageProps extends RouteComponentProps<{
 }> {}
 
 const DetailPost: React.FC<UserDetailPageProps> = ({match}) => {
-  const { handleSubmit, control, errors } = useForm();
+  const { handleSubmit, control, errors, reset } = useForm();
   const [showToast, setShowToast] = useState(false);
-  /**
-   * Get data of post 
-  */
-  const [post, setPost] = useState<Array<any>>([]);
-  const [loading, setLoading] = useState(false);
-  const fetchPosts = () => {
-    setLoading(true);
-    getDetailPost(match.params.id).then((response) => {
-      if (response && response.data) {
-        setPost(response.data);
-      }
-    },error => {
-        console.log(JSON.stringify(error))
-    }).finally(() => {
-        setLoading(false);
-    });
-  };
-  useEffect(() => {
-    fetchPosts();
-  }, [])
-  
-  /**
-   * Get data of comments 
-  */
-  const [comments, setComments] = useState<Array<any>>([]);
-  const fetchComments = () => {
-    setLoading(true);
-    getComments(match.params.id).then((response) => {
-      if (response && response.data) {
-        console.log(response.data)
-        setComments(response.data);
-      }
-    },error => {
-        console.log(JSON.stringify(error))
-    }).finally(() => {
-        setLoading(false);
-    });
-  };
-  useEffect(() => {
-    fetchComments();
-  }, [])
-  
-  /**
-   * Create new comment
-   * @param data
-   */
-  const onSubmit = (data: any) => {
-    data.postId = post ? post : 1;
-    const info = JSON.stringify(data, null, 2);
-    createComment(info).then(res => {
-      fetchComments();
-      setShowToast(true);    
-    },error => {             
-      console.log(error)
-    })
-  };
+  let entrance;
+  let commentsForPost:Array<any> = [];
+
   
   const formFields: InputProps[] = [
     {
@@ -84,6 +33,64 @@ const DetailPost: React.FC<UserDetailPageProps> = ({match}) => {
       component: <IonTextarea />
     }
   ];
+
+  /**
+   * Get data of post 
+  */
+  const [loading, setLoading] = useState(false);
+  const fetchPosts = () => {
+    for (let i = 0; i < Posts.length; i++) {
+      if(Posts[i].id == parseInt(match.params.id)){
+        entrance = Posts[i];
+        return entrance;
+      }
+    }
+  };
+  useEffect(() => {
+    fetchPosts();
+  }, [])
+  console.log(fetchPosts())
+
+  /**
+   * Get data of comments 
+  */
+  const fetchComments = () => {
+    for (let i = 0; i < commentsPost.length; i++) {
+      if(commentsPost[i].postId == parseInt(match.params.id)){
+        commentsForPost.push(commentsPost[i]);
+      }
+    }
+    return commentsForPost;
+  };
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  console.log(fetchComments());
+
+  /**
+   * Create new comment
+   * @param data
+   */
+  const onSubmit = (data: any) => {
+    data.postId = entrance.id;
+    let commentL = commentsPost.length;
+    data.id = commentL + 1;
+    
+    setLoading(true)
+    commentsPost.push({
+      "username": data.username,
+      "body": data.body,
+      "postId": data.postId,
+      "id": data.id
+    });
+    
+    setTimeout(() => {
+      
+      setLoading(false);
+      setShowToast(true);
+    }, 1000);
+  };
 
   return (
     <IonPage>
@@ -103,6 +110,8 @@ const DetailPost: React.FC<UserDetailPageProps> = ({match}) => {
             <IonSpinner name="crescent" />
           </div>
         )}
+        <PostDetail id={entrance.id} title={entrance.title} userName={entrance.username} content={entrance.body} timestamp={entrance.createdAt} />
+        
         <IonItemDivider></IonItemDivider>
 
         <IonCard className="commentCard">
@@ -112,7 +121,7 @@ const DetailPost: React.FC<UserDetailPageProps> = ({match}) => {
                 <p >Make a comment</p>
               </IonLabel>
             </IonItemDivider>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form id="formComments" onSubmit={handleSubmit(onSubmit)}>
                 {formFields.map((field, index) => (
                     <Input {...field} control={control} key={index} errors={errors} />
                 ))}
@@ -133,7 +142,7 @@ const DetailPost: React.FC<UserDetailPageProps> = ({match}) => {
                 <IonSpinner name="crescent" />
               </div>
             )}
-            {comments.map((comment,index) => (
+            {commentsForPost.map((comment,index) => (
               <Comments key={index} id={comment.id} userName={comment.username} comment={comment.body} />        
             ))}
           </IonCardContent>
@@ -148,6 +157,7 @@ const DetailPost: React.FC<UserDetailPageProps> = ({match}) => {
             color="success"
           />
         )}
+
       </IonContent>
 
     </IonPage>

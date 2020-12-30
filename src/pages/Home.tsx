@@ -5,12 +5,14 @@ import ListEntrance from '../components/ListEntrance';
 import { useForm } from "react-hook-form";
 import Input, { InputProps } from "../components/Input";
 import {getPosts, createPosts} from '../services/api';
+import {Posts} from '../staticData/posts';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './Home.css';
 
 const Home: React.FC<RouteComponentProps> = ({history}) => {
   const { handleSubmit, control, errors } = useForm();
   const [showToast, setShowToast] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const formFields: InputProps[] = [
     {
@@ -29,40 +31,31 @@ const Home: React.FC<RouteComponentProps> = ({history}) => {
   ];
 
   /**
-   * Get data of post 
-   */
-  const [posts, setPosts] = useState<Array<any>>([]);
-  const [loading, setLoading] = useState(false);
-  const fetchPosts = () => {
-    setLoading(true);
-    getPosts().then((response) => {
-      if (response && response.data) {        
-        setPosts(response.data);
-      }
-    },error => {
-      console.log(JSON.stringify(error))
-    } ).finally(() => {
-      setLoading(false);
-    });
-  };
-  useEffect(() => {
-    fetchPosts();
-  }, [])
-
-  /**
    * Create new post
    * @param data 
    */
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: any,e) => {
     data.createdAt= new Date();
     data.comments = [];
+    let a = Posts.length;
+    data.id = a + 1;
     const info = JSON.stringify(data, null, 2);
-    createPosts(info).then(res => {             
-      fetchPosts();
+    setLoading(true)
+    
+    Posts.push({
+      "username": data.username,
+      "title": data.title,
+      "body": data.body,
+      "createdAt": (new Date()).toUTCString(),
+      "comments": [],
+      "id": data.id
+    });
+
+    setTimeout(() => {
+      e.target.reset();
+      setLoading(false);
       setShowToast(true);
-    },error=> {             
-      console.log(error)
-    })
+    }, 1000);
   };
   
   return (
@@ -95,9 +88,10 @@ const Home: React.FC<RouteComponentProps> = ({history}) => {
           </div>
         )}
         
-        {posts.map((post,index) => (
+        {Posts.map((post,index) => (
           <IonCard color="medium" onClick={e => {
             e.preventDefault();
+            localStorage.setItem('post',JSON.stringify(post))
             history.push({
               pathname: '/Detail/'+post.id
             })

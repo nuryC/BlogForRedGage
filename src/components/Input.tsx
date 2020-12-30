@@ -33,6 +33,7 @@ const Input: FC<InputProps> = ({
           rules={{
             required: "This is a required field"
           }}
+          defaultValue="" 
         />
       </IonItem>
       <ErrorMessage

@@ -5,7 +5,7 @@ import './Comments.css';
 interface ContainerProps {
   userName: string;
   comment: string;
-  id: string;
+  id: number;
 }
 
 const Comments: React.FC<ContainerProps> = ({ 

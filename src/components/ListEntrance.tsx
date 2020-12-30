@@ -3,7 +3,7 @@ import { IonCard, IonCardContent, IonRow, IonCol } from '@ionic/react';
 import './ListEntrance.css';
 
 interface ContainerProps {
-  id:string;
+  id:number;
   userName: string;
   timestamp: string;
   content: string;

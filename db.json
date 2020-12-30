@@ -18,16 +18,10 @@
   ],
   "comments": [
     {
-      "id": 1,
-      "body": "some comment",
-      "username": "typicode",
-      "postId": 1
-    },
-    {
       "username": "user",
       "body": "some ramdon comment",
       "postId": 1,
-      "id": 2
+      "id": 1
     }
   ]
 }
